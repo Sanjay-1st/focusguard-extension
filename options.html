@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FocusGuard Dashboard</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #2c3e50; }
+    
+    .sidebar { width: 250px; background: #ffffff; height: 100vh; position: fixed; padding: 30px; border-right: 1px solid #eee; display: flex; flex-direction: column; }
+    .brand { font-size: 24px; font-weight: bold; color: #2c3e50; display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+    
+    .nav-item { padding: 12px 15px; margin-bottom: 5px; cursor: pointer; border-radius: 8px; font-weight: 500; color: #7f8c8d; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
+    .nav-item:hover, .nav-item.active { background: #eaf2f8; color: #3498db; }
+    
+    .main-content { margin-left: 310px; padding: 40px; max-width: 900px; }
+    
+    /* Stats Cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+    .stat-box { background: linear-gradient(135deg, #fff 0%, #f9fcff 100%); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eef2f7; }
+    .stat-number { font-size: 32px; font-weight: bold; color: #3498db; margin: 10px 0; }
+    .stat-label { font-size: 12px; color: #95a5a6; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+    h2 { margin-top: 0; font-size: 18px; margin-bottom: 20px; color: #2c3e50; }
+    
+    /* Input Group */
+    .input-row { display: flex; gap: 10px; }
+    input[type="text"] { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.2s; }
+    input[type="text"]:focus { border-color: #3498db; }
+    
+    .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; transition: 0.2s; }
+    .btn-primary { background: #3498db; }
+    .btn-primary:hover { background: #2980b9; transform: translateY(-1px); }
+    
+    /* Table */
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    th { text-align: left; background: #f8f9fa; padding: 15px; font-weight: 600; color: #7f8c8d; font-size: 13px; border-bottom: 2px solid #eee; }
+    td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    
+    .progress-bg { width: 100px; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    .progress-fill { height: 100%; background: #27ae60; }
+    
+    .btn-delete { background: #fff0f0; color: #e74c3c; border: 1px solid #ffcccc; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .btn-delete:hover { background: #e74c3c; color: white; border-color: #e74c3c; }
+
+    .quote-item { padding: 15px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .hidden { display: none; }
+    .icon { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="brand">
+      <img src="icon.png" width="28"> FocusGuard
+    </div>
+    
+    <div class="nav-item active" id="menuDashboard">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" id="menuQuotes">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      Quotes
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <!-- DASHBOARD SECTION (Merged) -->
+    <div id="sectionDashboard">
+      <h1 style="margin-bottom: 30px;">Overview</h1>
+      
+      <!-- 1. Stats Row -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-label">Total Visits</div>
+          <div class="stat-number" id="totalVisits">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Time Wasted Today</div>
+          <div class="stat-number" id="totalTime">0m</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Most Visited</div>
+          <div class="stat-number" id="topSite" style="font-size: 18px; word-break: break-all;">-</div>
+        </div>
+      </div>
+
+      <!-- 2. Add Site -->
+      <div class="card">
+        <h2>Add New Rule</h2>
+        <div class="input-row">
+          <input type="text" id="newSiteInput" placeholder="Enter domain (e.g. youtube.com)">
+          <select id="newSiteType" style="padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: white; cursor: pointer;">
+            <option value="limit">5 Min Limit</option>
+            <option value="always">Block Forever</option>
+          </select>
+          <button id="addNewSiteBtn" class="btn btn-primary">Add Rule</button>
+        </div>
+      </div>
+
+      <!-- 3. Active Rules Table -->
+      <div class="card">
+        <h2>Active Rules & Usage</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Website</th>
+              <th>Rule Type</th>
+              <th>Today's Progress</th>
+              <th>Total Visits</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="rulesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- QUOTES SECTION -->
+    <div id="sectionQuotes" class="hidden">
+      <h1>Custom Quotes</h1>
+      <div class="card">
+        <h2>Add New Quote</h2>
+        <div class="input-row">
+          <input type="text" id="newQuoteInput" placeholder="Type a motivational quote...">
+          <button id="addQuoteBtn" class="btn btn-primary">Save Quote</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>My Quotes</h2>
+        <div id="quotesList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

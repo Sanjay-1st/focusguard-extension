@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "FocusGuard",
+  "version": "2.1",
+  "description": "Website blocker with visual countdown.",
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "32": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FocusGuard Blocked</title>
+  <style>
+    body { background-color: #1a252f; color: #ecf0f1; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
+    h1 { font-size: 2.5rem; margin: 10px 0; font-weight: 300; letter-spacing: 1px; }
+    p { font-size: 1.1rem; color: #95a5a6; margin-bottom: 30px; }
+    
+    .quote-container { margin: 20px 0; padding: 0 20px; font-style: italic; color: #3498db; font-size: 1.4rem; max-width: 700px; line-height: 1.5; }
+    
+    .icon svg { width: 80px; height: 80px; stroke: #e74c3c; stroke-width: 1.5; }
+    
+    .btn-dashboard { 
+      background: transparent; 
+      color: #3498db; 
+      border: 2px solid #3498db; 
+      padding: 12px 30px; 
+      font-size: 1rem; 
+      border-radius: 50px; 
+      cursor: pointer; 
+      transition: 0.2s; 
+      margin-top: 40px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn-dashboard:hover { background: #3498db; color: white; }
+  </style>
+</head>
+<body>
+  <div class="icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+    </svg>
+  </div>
+  
+  <h1>Site Blocked</h1>
+  <p>You have reached your limit.</p>
+  
+  <div id="quoteDisplay" class="quote-container">
+    "Focus on being productive instead of busy."
+  </div>
+
+  <button id="openDashboardBtn" class="btn-dashboard">Go to Dashboard</button>
+
+  <script src="blocked.js"></script>
+</body>
+</html>
